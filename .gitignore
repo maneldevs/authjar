@@ -1,0 +1,37 @@
+# --- JAVA & MAVEN ---
+# Archivos compilados y empaquetados por Maven
+target/
+*.class
+*.war
+*.ear
+*.jar
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# --- VISUAL STUDIO CODE ---
+# Configuraciones locales del editor e historial
+.vscode/
+!.vscode/extensions.json
+.history/
+*.code-workspace
+
+# --- CONFIGURACIÓN & SEGURIDAD (¡Muy Importante!) ---
+# Variables de entorno con credenciales secretas
+.env
+.env.local
+.env.*.local
+
+# --- SISTEMA OPERATIVO (Ubuntu / Linux) ---
+# Archivos temporales del sistema
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# --- LOGS & TEMPORALES ---
+# Archivos de volcado de fallos y registros de ejecución
+*.log
+crash.dump

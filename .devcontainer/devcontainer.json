@@ -1,0 +1,34 @@
+{
+	"name": "Java",
+	"image": "mcr.microsoft.com/devcontainers/java:3-25-trixie",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": "true",
+			"installGradle": "false"
+		}
+	},
+	"runArgs": [
+		"--name",
+		"authjar",
+		"--add-host=host.docker.internal:host-gateway"
+	],
+	"customizations": {
+		"settings": {
+			"editor.rulers": [
+				100
+			],
+			"editor.formatOnSave": true,
+			"java.format.settings.url": "https://githubusercontent.com",
+			"java.format.settings.profile": "GoogleStyle",
+			"java.cleanups.lineSplit": 100
+		},
+		"extensions": [
+			"vscjava.vscode-java-pack",
+			"pkief.material-icon-theme",
+			"continue.continue",
+			"codeium.codeium"
+		]
+	},
+	"remoteUser": "root"
+}

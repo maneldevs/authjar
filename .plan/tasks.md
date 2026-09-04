@@ -1,0 +1,1 @@
+- Sacar a config todas las configuraciones de main
