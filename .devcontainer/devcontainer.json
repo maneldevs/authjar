@@ -27,7 +27,8 @@
 			"vscjava.vscode-java-pack",
 			"pkief.material-icon-theme",
 			"continue.continue",
-			"codeium.codeium"
+			"codeium.codeium",
+			"vstirbu.vscode-mermaid-preview"
 		]
 	},
 	"remoteUser": "root"

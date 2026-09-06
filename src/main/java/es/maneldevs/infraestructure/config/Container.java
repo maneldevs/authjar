@@ -4,24 +4,27 @@ import java.util.List;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import es.maneldevs.infraestructure.in.HttpController;
-import es.maneldevs.infraestructure.in.api.DefaultApiController;
-import es.maneldevs.infraestructure.in.web.DefaultWebController;
+import es.maneldevs.application.service.AuthService;
+import es.maneldevs.infraestructure.in.adapter.HttpController;
+import es.maneldevs.infraestructure.in.adapter.api.AuthApiController;
+import es.maneldevs.infraestructure.in.adapter.api.DefaultApiController;
+import es.maneldevs.infraestructure.in.adapter.web.DefaultWebController;
 
 public class Container {
+    public List<HttpController> controllers;
+    public SecurityFilter securityFilter;
 
-    public static List<HttpController> buildControllers(HikariDataSource dataSource) {
-        // var authRepository = new PostgresAuthRepository(dataSource);
-        // var loginUseCase = new LoginUseCase(authRepository);
-        // var authWebController = new AuthWebController(loginUseCase);
-        // var authApiController = new AuthApiController(loginUseCase);
+    public Container(HikariDataSource dataSource) {
+        var userPort = new UserRepository(dataSource);
+        var apiKeyPort = new ApiKeyRepository(dataSource);
+        var AuthUseCase = new AuthService(userPort, apiKeyPort);
+        this.securityFilter = new SecurityFilter(AuthUseCase);
         var defaultWebController = new DefaultWebController();
         var defaultApiController = new DefaultApiController();
-        return List.of(
-                // authWebController,
-                // authApiController
+        var authApiController = new AuthApiController(AuthUseCase);
+        this.controllers = List.of(
                 defaultWebController,
-                defaultApiController);
-
+                defaultApiController,
+                authApiController);
     }
 }

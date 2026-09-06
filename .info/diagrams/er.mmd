@@ -1,0 +1,30 @@
+erDiagram
+    users {
+        string id PK
+        string email
+        string password_hash
+        string* user_role
+        bool active 
+    }
+
+    client_apps {
+        string id PK
+        string company
+        bool active
+    }
+
+    sessions {
+        string id PK
+        timestamptz expires_at
+        string user_id FK
+    }
+
+    api_keys {
+        string id PK
+        string client_app_id FK
+        string api_key_hash
+        bool active
+    }
+
+    users ||--o{ sessions : ""
+    client_apps ||--o{ api_keys : ""

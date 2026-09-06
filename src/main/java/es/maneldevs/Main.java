@@ -10,7 +10,6 @@ import es.maneldevs.infraestructure.config.EnvLoaderConfig;
 import es.maneldevs.infraestructure.config.MigrationConfig;
 import es.maneldevs.infraestructure.config.TemplateEngineConfig;
 import es.maneldevs.infraestructure.config.WebConfig;
-import es.maneldevs.infraestructure.in.HttpController;
 import gg.jte.TemplateEngine;
 
 public class Main {
@@ -20,7 +19,7 @@ public class Main {
         HikariDataSource dataSource = DatabaseConfig.init();
         MigrationConfig.init(dataSource);
         TemplateEngine templateEngine = TemplateEngineConfig.init();
-        List<HttpController> controllers = Container.buildControllers(dataSource);
-        WebConfig.init(templateEngine, dataSource, controllers);
+        Container container = new Container(dataSource);
+        WebConfig.init(templateEngine, dataSource, container.securityFilter, container.controllers);
     }
 }

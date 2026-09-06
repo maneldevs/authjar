@@ -1,4 +1,4 @@
-package es.maneldevs.infraestructure.in;
+package es.maneldevs.infraestructure.in.adapter;
 
 import io.javalin.config.JavalinConfig;
 

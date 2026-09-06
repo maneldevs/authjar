@@ -5,33 +5,29 @@ import java.util.List;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-import es.maneldevs.infraestructure.in.HttpController;
+import es.maneldevs.infraestructure.in.adapter.HttpController;
 import gg.jte.TemplateEngine;
 import io.javalin.Javalin;
+import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.template.JavalinJte;
 
 public class WebConfig {
 
-    public static Javalin init(TemplateEngine templateEngine, HikariDataSource dataSource,
+    public static Javalin init(TemplateEngine templateEngine, HikariDataSource dataSource, SecurityFilter filter,
             List<HttpController> controllers) {
         int puerto = Integer.parseInt(Env.APP_PORT);
         Javalin app = Javalin.create(config -> {
             config.fileRenderer(new JavalinJte(templateEngine));
+            config.staticFiles.add(staticFiles -> {
+                staticFiles.directory = "/static";
+                staticFiles.hostedPath = "/static";
+                staticFiles.location = Location.CLASSPATH;
+            });
+            config.routes.before(filter::doFilter);
+            config.routes.beforeMatched(AccessManager::manageAccess);
             for (HttpController controller : controllers) {
                 controller.registerRoutes(config);
             }
-            // // SINTAXIS JAVALIN 7: Las rutas se definen directamente usando
-            // 'config.routes'
-            // config.routes.get("/", ctx -> {
-            // ctx.render("index.jte", Collections.singletonMap("usuario",
-            // "Desarrollador"));
-            // });
-
-            // config.routes.get("/api/estado", ctx -> {
-            // ctx.json(Collections.singletonMap("estado", "Servidor operativo en hilos
-            // virtuales"));
-            // });
-
         });
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
