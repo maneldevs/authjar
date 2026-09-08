@@ -1,0 +1,8 @@
+@urlbase=http://localhost:8080
+
+### Check Health
+GET {{urlbase}}/api/health
+
+
+### Check protected route
+GET {{urlbase}}/api/protectedf

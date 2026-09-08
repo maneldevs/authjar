@@ -1,5 +1,7 @@
 package es.maneldevs.infraestructure.config;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +9,10 @@ import es.maneldevs.domain.exception.AccessDeniedException;
 import es.maneldevs.domain.exception.InvalidCredentialsException;
 import es.maneldevs.domain.exception.UnauthenticatedException;
 import io.javalin.config.JavalinConfig;
+import io.javalin.http.Context;
+import io.javalin.http.HttpResponseException;
+import io.javalin.http.HttpStatus;
+import io.javalin.router.exception.HttpResponseExceptionMapper;
 
 public class ExceptionConfig {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionConfig.class);
@@ -16,26 +22,41 @@ public class ExceptionConfig {
             if (ctx.path().startsWith("/web")) {
                 ctx.redirect("/web/login?error=true");
             } else {
-                ctx.status(401).result("Unauthorized");
+                sendJsonError(ctx, 401, "Unauthorized", e.getMessage());
             }
         });
         config.routes.exception(UnauthenticatedException.class, (e, ctx) -> {
             if (ctx.path().startsWith("/web")) {
                 ctx.redirect("/web/login");
             } else {
-                ctx.status(401).result("Unauthorized");
+                sendJsonError(ctx, 401, "Unauthorized", e.getMessage());
             }
         });
         config.routes.exception(AccessDeniedException.class, (e, ctx) -> {
             if (ctx.path().startsWith("/web")) {
                 ctx.redirect("/web/login");
             } else {
-                ctx.status(403).result("Forbidden");
+                sendJsonError(ctx, 403, "Forbidden", e.getMessage());
+            }
+        });
+        config.routes.exception(HttpResponseException.class, (e, ctx) -> {
+            if (ctx.path().startsWith("/web")) {
+                HttpResponseExceptionMapper.INSTANCE.handle(e, ctx);
+            } else {
+                sendJsonError(ctx, e.getStatus(), HttpStatus.forStatus(e.getStatus()).getMessage(), e.getMessage());
             }
         });
         config.routes.exception(Exception.class, (e, ctx) -> {
             logger.error("Unhandled exception processing request {}", ctx.path(), e);
-            ctx.status(500).result("Internal Server Error");
+            if (ctx.path().startsWith("/web")) {
+                ctx.status(500).result("Internal Server Error");
+            } else {
+                sendJsonError(ctx, 500, "Internal Server Error", e.getMessage());
+            }
         });
+    }
+
+    private static void sendJsonError(Context ctx, int code, String type, String message) {
+        ctx.status(code).json(Map.of("code", code, "type", type, "message", message != null ? message : type));
     }
 }

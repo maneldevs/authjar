@@ -11,6 +11,7 @@ import es.maneldevs.application.service.AuthService;
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import es.maneldevs.infraestructure.in.adapter.api.AuthApiController;
 import es.maneldevs.infraestructure.in.adapter.api.DefaultApiController;
+import es.maneldevs.infraestructure.in.adapter.b2b.DefaultB2BController;
 import es.maneldevs.infraestructure.in.adapter.web.DefaultWebController;
 import es.maneldevs.infraestructure.out.persistence.ApiKeyRepository;
 import es.maneldevs.infraestructure.out.persistence.UserRepository;
@@ -27,9 +28,11 @@ public class Container {
         DefaultWebController defaultWebController = new DefaultWebController();
         DefaultApiController defaultApiController = new DefaultApiController();
         AuthApiController authApiController = new AuthApiController(authUseCase);
+        DefaultB2BController defaultB2BController = new DefaultB2BController();
         this.controllers = List.of(
                 defaultWebController,
                 defaultApiController,
-                authApiController);
+                authApiController,
+                defaultB2BController);
     }
 }

@@ -1,6 +1,6 @@
 package es.maneldevs.infraestructure.in.adapter.api;
 
-import java.util.Collections;
+import java.util.Map;
 
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import io.javalin.config.JavalinConfig;
@@ -15,10 +15,10 @@ public class DefaultApiController implements HttpController {
     }
 
     private void health(Context ctx) {
-        ctx.json(Collections.singletonMap("state", "OK"));
+        ctx.json(Map.of("state", "OK"));
     }
 
     private void checkProtected(Context ctx) {
-        ctx.json(Collections.singletonMap("state", "OK"));
+        ctx.json(Map.of("state", "OK"));
     }
 }

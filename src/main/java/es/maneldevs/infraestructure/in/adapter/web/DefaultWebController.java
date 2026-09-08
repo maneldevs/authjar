@@ -1,6 +1,6 @@
 package es.maneldevs.infraestructure.in.adapter.web;
 
-import java.util.Collections;
+import java.util.Map;
 
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import io.javalin.config.JavalinConfig;
@@ -15,12 +15,12 @@ public class DefaultWebController implements HttpController {
     }
 
     private void health(Context ctx) {
-        var modelo = Collections.singletonMap("titulo", "Iniciar Sesión");
+        var modelo = Map.of("titulo", "Iniciar Sesión");
         ctx.render("health.jte", modelo);
     }
 
     private void checkProtected(Context ctx) {
-        var modelo = Collections.singletonMap("titulo", "Iniciar Sesión");
+        var modelo = Map.of("titulo", "Iniciar Sesión");
         ctx.render("health.jte", modelo);
     }
 

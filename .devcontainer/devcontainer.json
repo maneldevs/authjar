@@ -8,11 +8,6 @@
 			"installGradle": "false"
 		}
 	},
-	"runArgs": [
-		"--name",
-		"authjar",
-		"--add-host=host.docker.internal:host-gateway"
-	],
 	"customizations": {
 		"settings": {
 			"editor.rulers": [
@@ -28,7 +23,8 @@
 			"pkief.material-icon-theme",
 			"continue.continue",
 			"codeium.codeium",
-			"vstirbu.vscode-mermaid-preview"
+			"vstirbu.vscode-mermaid-preview",
+			"humao.rest-client"
 		]
 	},
 	"remoteUser": "root"

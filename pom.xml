@@ -4,8 +4,8 @@
   xsi:schemaLocation="http://apache.org http://apache.org">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ejemplo</groupId>
-  <artifactId>mi-proyecto-java</artifactId>
+  <groupId>es.maneldevs</groupId>
+  <artifactId>authjar</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>

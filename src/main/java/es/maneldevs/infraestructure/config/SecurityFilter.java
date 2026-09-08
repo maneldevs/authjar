@@ -34,6 +34,7 @@ public class SecurityFilter {
             validarB2B(ctx);
         } else {
             ctx.status(404);
+            return;
         }
 
         if (userLogged != null) {

@@ -22,7 +22,7 @@ public class WebConfig {
                 staticFiles.hostedPath = "/static";
                 staticFiles.location = Location.CLASSPATH;
             });
-            config.routes.before(filter::doFilter);
+            config.routes.beforeMatched(filter::doFilter);
             config.routes.beforeMatched(AccessManager::manageAccess);
             ExceptionConfig.init(config);
             for (HttpController controller : controllers) {
