@@ -1,7 +1,7 @@
 package es.maneldevs.infraestructure.in.adapter.api;
 
 import es.maneldevs.application.portin.AuthUseCase;
-import es.maneldevs.application.service.AuthService;
+import es.maneldevs.domain.model.User;
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import es.maneldevs.infraestructure.in.model.LoginApiResponse;
 import es.maneldevs.infraestructure.in.model.LoginRequest;
@@ -23,10 +23,6 @@ public class AuthApiController implements HttpController {
     private void login(Context ctx) {
         LoginRequest loginRequest = ctx.bodyAsClass(LoginRequest.class);
         User user = authUseCase.authenticate(loginRequest.email(), loginRequest.password());
-        if (user == null) {
-            ctx.status(401).result("Unauthorized");
-            return;
-        }
         String token = authUseCase.generateToken(user);
         ctx.status(200).json(new LoginApiResponse(token, "Bearer"));
     }

@@ -7,15 +7,18 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.HexFormat;
-import java.util.UUID;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import es.maneldevs.application.portin.AuthUseCase;
+import es.maneldevs.application.portout.ApiKeyPort;
+import es.maneldevs.application.portout.UserPort;
+import es.maneldevs.domain.exception.InvalidCredentialsException;
+import es.maneldevs.domain.model.Session;
+import es.maneldevs.domain.model.User;
 import es.maneldevs.infraestructure.config.Env;
-import es.maneldevs.infraestructure.in.model.UserSession;
 
 public class AuthService implements AuthUseCase {
     private final UserPort userPort;
@@ -23,15 +26,15 @@ public class AuthService implements AuthUseCase {
 
     public AuthService(UserPort userPort, ApiKeyPort apiKeyPort) {
         this.userPort = userPort;
-        this.apiKeyPort = new ApiKeyPort();
+        this.apiKeyPort = apiKeyPort;
     }
 
     @Override
-    public User getUserLoggedFromSession(String sessionId) {
+    public User getUserLoggedFromSessionNotExpired(String sessionId) {
         if (sessionId == null || sessionId.isBlank()) {
             return null;
         }
-        return userPort.getUserLoggedFromSession(sessionId);
+        return userPort.getUserLoggedFromSessionNotExpired(sessionId);
     }
 
     @Override
@@ -61,20 +64,18 @@ public class AuthService implements AuthUseCase {
     }
 
     @Override
-    public String authenticate(String email, String password) {
+    public User authenticate(String email, String password) {
         User user = userPort.getUserByEmail(email);
-        if (user != null) {
-            if (user.getPasswordHash().equals(generateHashSha256(password))) {
-                return user.getId();
-            }
+        if (user == null || !user.getPasswordHash().equals(generateHashSha256(password))) {
+            throw new InvalidCredentialsException();
         }
-        return null;
+        return user;
     }
 
     @Override
-    public String generateToken(String user) {
+    public String generateToken(User user) {
         return JWT.create()
-                .withSubject(user)
+                .withSubject(user.getId())
                 .withIssuer(Env.JWL_ISSUER)
                 .sign(Algorithm.HMAC256(Env.JWT_SECRET));
     }

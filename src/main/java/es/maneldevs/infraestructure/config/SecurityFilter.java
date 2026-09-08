@@ -3,9 +3,11 @@ package es.maneldevs.infraestructure.config;
 import java.util.Set;
 
 import es.maneldevs.application.portin.AuthUseCase;
+import es.maneldevs.domain.exception.UnauthenticatedException;
+import es.maneldevs.domain.model.User;
+import es.maneldevs.infraestructure.in.model.RoleEnum;
 import es.maneldevs.infraestructure.in.model.UserSession;
 import io.javalin.http.Context;
-import io.javalin.http.UnauthorizedResponse;
 
 public class SecurityFilter {
     private static final Set<String> PUBLIC_API_ROUTES = Set.of("/api/health");
@@ -52,14 +54,12 @@ public class SecurityFilter {
     private UserSession validateSession(Context ctx) {
         String sessionId = ctx.cookie("session_id");
         if (sessionId != null && !sessionId.isBlank()) {
-            User userLogged = authUseCase.getUserLoggedFromSession(sessionId);
-            UserSession userSession = new UserSession(userLogged.id(), userLogged.email(), userLogged.role());
+            User userLogged = authUseCase.getUserLoggedFromSessionNotExpired(sessionId);
             if (userLogged != null) {
-                return userLogged;
+                return new UserSession(userLogged.getId(), userLogged.getEmail(), RoleEnum.valueOf(userLogged.getRole()));
             }
         }
-        ctx.redirect("/web/login");
-        throw new UnauthorizedResponse("Invalid session");
+        throw new UnauthenticatedException();
     }
 
     private UserSession validateToken(Context ctx) {
@@ -67,18 +67,17 @@ public class SecurityFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring("Bearer ".length());
             User userLogged = authUseCase.getUserLoggedFromToken(token);
-            UserSession userSession = new UserSession(userLogged.id(), userLogged.email(), userLogged.role());
             if (userLogged != null) {
-                return userLogged;
+                return new UserSession(userLogged.getId(), userLogged.getEmail(), RoleEnum.valueOf(userLogged.getRole()));
             }
         }
-        throw new UnauthorizedResponse("Invalid token or session");
+        throw new UnauthenticatedException();
     }
 
     private void validarB2B(Context ctx) {
         String apiKey = ctx.header("X-API-KEY");
         if (!authUseCase.apiKeyIsValid(apiKey)) {
-            throw new UnauthorizedResponse("Invalid API KEY");
+            throw new UnauthenticatedException();
         }
     }
 

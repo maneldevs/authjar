@@ -2,14 +2,15 @@ package es.maneldevs.infraestructure.in.adapter.web;
 
 import java.util.Map;
 
-import org.eclipse.jetty.http.HttpCookie.SameSite;
-
 import es.maneldevs.application.portin.AuthUseCase;
+import es.maneldevs.domain.model.Session;
+import es.maneldevs.domain.model.User;
 import es.maneldevs.infraestructure.config.Env;
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 import io.javalin.http.Cookie;
+import io.javalin.http.SameSite;
 
 public class AuthWebController implements HttpController {
     private final AuthUseCase authUseCase;
@@ -33,13 +34,9 @@ public class AuthWebController implements HttpController {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
         User user = authUseCase.authenticate(email, password);
-        if (user == null) {
-            ctx.redirect("/web/login?error=true"); // TODO aquí se puede poner una cookie
-            return;
-        }
         Session session = authUseCase.generateSession(user);
-        ctx.cookie(new Cookie("session_id", session.getId(), "/", Env.SESSION_DURATION_IN_DAYS * 60 * 60 * 24, true,
-                true, SameSite.LAX));
+        ctx.cookie(new Cookie("session_id", session.id(), "/", Env.SESSION_DURATION_IN_DAYS * 60 * 60 * 24, true,
+                true, null, SameSite.LAX));
         ctx.redirect("/web");
     }
 

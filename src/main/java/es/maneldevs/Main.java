@@ -1,7 +1,5 @@
 package es.maneldevs;
 
-import java.util.List;
-
 import com.zaxxer.hikari.HikariDataSource;
 
 import es.maneldevs.infraestructure.config.Container;

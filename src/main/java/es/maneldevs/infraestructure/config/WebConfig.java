@@ -1,6 +1,5 @@
 package es.maneldevs.infraestructure.config;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -25,6 +24,7 @@ public class WebConfig {
             });
             config.routes.before(filter::doFilter);
             config.routes.beforeMatched(AccessManager::manageAccess);
+            ExceptionConfig.init(config);
             for (HttpController controller : controllers) {
                 controller.registerRoutes(config);
             }

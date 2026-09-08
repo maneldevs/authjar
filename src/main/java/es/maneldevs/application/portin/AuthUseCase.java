@@ -1,9 +1,10 @@
 package es.maneldevs.application.portin;
 
-import es.maneldevs.infraestructure.in.model.UserSession;
+import es.maneldevs.domain.model.Session;
+import es.maneldevs.domain.model.User;
 
 public interface AuthUseCase {
-    User getUserLoggedFromSession(String sessionId);
+    User getUserLoggedFromSessionNotExpired(String sessionId);
 
     User getUserLoggedFromToken(String token);
 
@@ -11,7 +12,7 @@ public interface AuthUseCase {
 
     User authenticate(String email, String password);
 
-    String generateToken(String user);
+    String generateToken(User user);
 
     Session generateSession(User user);
 }
