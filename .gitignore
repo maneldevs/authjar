@@ -1,6 +1,7 @@
 # --- JAVA & MAVEN ---
 # Archivos compilados y empaquetados por Maven
 target/
+jte-classes/
 *.class
 *.war
 *.ear
