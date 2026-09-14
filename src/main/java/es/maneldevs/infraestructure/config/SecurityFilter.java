@@ -77,7 +77,7 @@ public class SecurityFilter {
 
     private void validarB2B(Context ctx) {
         String apiKey = ctx.header("X-API-KEY");
-        if (!authUseCase.apiKeyIsValid(apiKey)) {
+        if (!authUseCase.authenticateB2B(apiKey)) {
             throw new UnauthenticatedException();
         }
     }

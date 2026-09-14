@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -61,6 +62,29 @@ public class UserRepository implements UserPort {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error finding user by email", e);
+        }
+    }
+
+    @Override
+    public User createUser(String email, String passwordHash, String role) {
+        String sql = "INSERT INTO users (id, email, password_hash, user_role, active) VALUES (?, ?, ?, ?, ?) RETURNING id";
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, UUID.randomUUID().toString());
+            statement.setString(2, email);
+            statement.setString(3, passwordHash);
+            statement.setString(4, role);
+            statement.setBoolean(5, true);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String userId = resultSet.getString("id");
+                    return new User(userId, email, passwordHash, role, true);
+                } else {
+                    throw new RuntimeException("Error creating user: no ID returned");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error creating user", e);
         }
     }
 

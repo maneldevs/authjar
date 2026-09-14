@@ -9,5 +9,7 @@ public interface UserPort {
     User getActiveUserById(String userId);
 
     User getUserByEmail(String email);
+
+    User createUser(String email, String passwordHash, String role);
     
 }

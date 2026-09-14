@@ -23,6 +23,8 @@
     <jte.version>3.1.6</jte.version>
     <dotenv.version>3.2.0</dotenv.version>
     <slf4j.version>2.0.17</slf4j.version>
+    <java-jwt.version>4.6.0</java-jwt.version>
+    <argon2.version>2.12</argon2.version>
   </properties>
 
   <dependencies>
@@ -99,8 +101,16 @@
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
-      <version>4.6.0</version>
+      <version>${java-jwt.version}</version>
     </dependency>
+
+    <!-- Algoritmo de Hashing Argon2 para contraseñas -->
+    <dependency>
+      <groupId>de.mkammerer</groupId>
+      <artifactId>argon2-jvm</artifactId>
+      <version>${argon2.version}</version>
+    </dependency>
+    
   </dependencies>
 
   <build>

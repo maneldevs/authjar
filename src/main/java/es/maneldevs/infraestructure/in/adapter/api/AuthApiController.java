@@ -1,7 +1,6 @@
 package es.maneldevs.infraestructure.in.adapter.api;
 
 import es.maneldevs.application.portin.AuthUseCase;
-import es.maneldevs.domain.model.User;
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import es.maneldevs.infraestructure.in.model.LoginApiResponse;
 import es.maneldevs.infraestructure.in.model.LoginRequest;
@@ -22,8 +21,7 @@ public class AuthApiController implements HttpController {
 
     private void login(Context ctx) {
         LoginRequest loginRequest = ctx.bodyAsClass(LoginRequest.class);
-        User user = authUseCase.authenticate(loginRequest.email(), loginRequest.password());
-        String token = authUseCase.generateToken(user);
+        String token = authUseCase.authenticateApi(loginRequest.email(), loginRequest.password());
         ctx.status(200).json(new LoginApiResponse(token, "Bearer"));
     }
 

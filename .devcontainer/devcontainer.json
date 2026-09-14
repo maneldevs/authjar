@@ -24,8 +24,10 @@
 			"continue.continue",
 			"codeium.codeium",
 			"vstirbu.vscode-mermaid-preview",
-			"humao.rest-client"
+			"humao.rest-client",
+			"maj2c.jte-template-syntax-highlight"
 		]
 	},
 	"remoteUser": "root"
+	
 }

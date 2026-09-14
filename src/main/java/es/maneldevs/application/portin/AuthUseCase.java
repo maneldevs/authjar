@@ -8,11 +8,11 @@ public interface AuthUseCase {
 
     User getUserLoggedFromToken(String token);
 
-    boolean apiKeyIsValid(String apiKey);
+    boolean authenticateB2B(String apiKey);
 
-    User authenticate(String email, String password);
+    User registerUser(String email, String password, String role);
 
-    String generateToken(User user);
+    Session authenticateWeb(String email, String password);
 
-    Session generateSession(User user);
+    String authenticateApi(String email, String password);
 }
