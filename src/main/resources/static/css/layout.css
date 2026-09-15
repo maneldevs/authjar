@@ -1,0 +1,21 @@
+html,
+body {
+    height: 100%;
+}
+
+.app-body {
+    min-height: calc(100vh - 56px);
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+.sidebar .nav-link.active {
+    color: #c2410c;
+}
+
+.main-content {
+    min-width: 0;
+}

@@ -3,6 +3,7 @@ package es.maneldevs.infraestructure.in.adapter.web;
 import java.util.Map;
 
 import es.maneldevs.infraestructure.in.adapter.HttpController;
+import es.maneldevs.infraestructure.in.model.UserSession;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 
@@ -14,7 +15,8 @@ public class DeshboardWebController implements HttpController {
     }
 
     private void dashboard(Context ctx) {
-        var model = Map.of("title", "Dashboard");
+        UserSession userLogged = ctx.attribute("userLogged");
+        var model = Map.of("title", "Dashboard", "userEmail", userLogged.email());
         ctx.render("dashboard.jte", model);
     }
     

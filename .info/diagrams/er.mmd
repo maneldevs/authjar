@@ -7,10 +7,16 @@ erDiagram
         bool active 
     }
 
+    clients {
+        string id PK
+        string name
+        bool active
+    }
+
     client_apps {
         string id PK
-        string company
         bool active
+        string client_id FK
     }
 
     sessions {
@@ -27,4 +33,5 @@ erDiagram
     }
 
     users ||--o{ sessions : ""
+    clients ||--o{ client_apps : ""
     client_apps ||--o{ api_keys : ""
