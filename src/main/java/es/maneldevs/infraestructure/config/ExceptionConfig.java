@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import es.maneldevs.domain.exception.AccessDeniedException;
 import es.maneldevs.domain.exception.InvalidCredentialsException;
 import es.maneldevs.domain.exception.UnauthenticatedException;
+import es.maneldevs.domain.exception.ValidationException;
+import es.maneldevs.infraestructure.in.adapter.web.FlashMessages;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 import io.javalin.http.HttpResponseException;
@@ -37,6 +39,15 @@ public class ExceptionConfig {
                 ctx.redirect("/web/login");
             } else {
                 sendJsonError(ctx, 403, "Forbidden", e.getMessage());
+            }
+        });
+        config.routes.exception(ValidationException.class, (e, ctx) -> {
+            if (ctx.path().startsWith("/web")) {
+                String formPath = ctx.path().equals("/web/clients") ? "/web/clients/new" : ctx.path();
+                FlashMessages.setError(ctx, e.getMessage());
+                ctx.redirect(formPath);
+            } else {
+                sendJsonError(ctx, 422, "Unprocessable Entity", e.getMessage());
             }
         });
         config.routes.exception(HttpResponseException.class, (e, ctx) -> {

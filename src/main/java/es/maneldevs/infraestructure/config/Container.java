@@ -5,18 +5,23 @@ import java.util.List;
 import com.zaxxer.hikari.HikariDataSource;
 
 import es.maneldevs.application.portin.AuthUseCase;
+import es.maneldevs.application.portin.ClientUseCase;
 import es.maneldevs.application.portout.ApiKeyPort;
+import es.maneldevs.application.portout.ClientPort;
 import es.maneldevs.application.portout.SessionPort;
 import es.maneldevs.application.portout.UserPort;
 import es.maneldevs.application.service.AuthService;
+import es.maneldevs.application.service.ClientService;
 import es.maneldevs.infraestructure.in.adapter.HttpController;
 import es.maneldevs.infraestructure.in.adapter.api.AuthApiController;
 import es.maneldevs.infraestructure.in.adapter.api.DefaultApiController;
 import es.maneldevs.infraestructure.in.adapter.b2b.DefaultB2BController;
 import es.maneldevs.infraestructure.in.adapter.web.AuthWebController;
+import es.maneldevs.infraestructure.in.adapter.web.ClientWebController;
+import es.maneldevs.infraestructure.in.adapter.web.DashboardWebController;
 import es.maneldevs.infraestructure.in.adapter.web.DefaultWebController;
-import es.maneldevs.infraestructure.in.adapter.web.DeshboardWebController;
 import es.maneldevs.infraestructure.out.persistence.ApiKeyRepository;
+import es.maneldevs.infraestructure.out.persistence.ClientRepository;
 import es.maneldevs.infraestructure.out.persistence.SessionRepository;
 import es.maneldevs.infraestructure.out.persistence.UserRepository;
 
@@ -28,20 +33,24 @@ public class Container {
         UserPort userPort = new UserRepository(dataSource);
         ApiKeyPort apiKeyPort = new ApiKeyRepository(dataSource);
         SessionPort sessionPort = new SessionRepository(dataSource);
+        ClientPort clientPort = new ClientRepository(dataSource);
         AuthUseCase authUseCase = new AuthService(userPort, apiKeyPort, sessionPort);
+        ClientUseCase clientUseCase = new ClientService(clientPort);
         this.securityFilter = new SecurityFilter(authUseCase);
         DefaultWebController defaultWebController = new DefaultWebController();
         AuthWebController authWebController = new AuthWebController(authUseCase);
         DefaultApiController defaultApiController = new DefaultApiController();
         AuthApiController authApiController = new AuthApiController(authUseCase);
         DefaultB2BController defaultB2BController = new DefaultB2BController();
-        DeshboardWebController deshboardWebController = new DeshboardWebController();
+        DashboardWebController deshboardWebController = new DashboardWebController();
+        ClientWebController clientWebController = new ClientWebController(clientUseCase);
         this.controllers = List.of(
                 defaultWebController,
                 authWebController,
                 defaultApiController,
                 authApiController,
                 defaultB2BController,
-                deshboardWebController);
+                deshboardWebController,
+                clientWebController);
     }
 }

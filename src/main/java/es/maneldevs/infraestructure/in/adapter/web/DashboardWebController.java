@@ -7,7 +7,7 @@ import es.maneldevs.infraestructure.in.model.UserSession;
 import io.javalin.config.JavalinConfig;
 import io.javalin.http.Context;
 
-public class DeshboardWebController implements HttpController {
+public class DashboardWebController implements HttpController {
 
     @Override
     public void registerRoutes(JavalinConfig config) {
