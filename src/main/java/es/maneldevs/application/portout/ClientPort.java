@@ -13,5 +13,5 @@ public interface ClientPort {
 
     Client createClient(String name);
 
-    void updateClient(String id, String name, boolean active);
+    void updateClient(String id, String name);
 }

@@ -57,8 +57,7 @@ public class ClientWebController implements HttpController {
     private void updateClient(Context ctx) {
         String id = ctx.pathParam("id");
         String name = ctx.formParam("name");
-        boolean active = ctx.formParam("active") != null;
-        clientUseCase.updateClient(id, name, active);
+        clientUseCase.updateClient(id, name);
         ctx.redirect("/web/clients");
     }
 

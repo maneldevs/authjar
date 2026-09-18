@@ -17,7 +17,6 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Status</th>
                 <th class="text-end">Actions</th>
             </tr>
         </thead>
@@ -25,25 +24,14 @@
             @for(Client client : clients)
             <tr>
                 <td>${client.getName()}</td>
-                <td>
-                    @if(client.isActive())
-                    <span class="badge text-bg-success">Active</span>
-                    @else
-                    <span class="badge text-bg-secondary">Inactive</span>
-                    @endif
-                </td>
                 <td class="text-end">
                     <a href="/web/clients/${client.getId()}/edit" class="btn btn-outline-secondary btn-sm me-1"
                         data-bs-toggle="tooltip" title="Edit client" aria-label="Edit client">
                         <i class="bi bi-pencil" aria-hidden="true"></i>
                     </a>
                     <a href="/web/clients/${client.getId()}/apps" class="btn btn-outline-secondary btn-sm me-1"
-                        data-bs-toggle="tooltip" title="Ver aplicaciones" aria-label="Ver aplicaciones">
+                        data-bs-toggle="tooltip" title="View applications" aria-label="View applications">
                         <i class="bi bi-grid" aria-hidden="true"></i>
-                    </a>
-                    <a href="/web/clients/${client.getId()}/api-keys" class="btn btn-outline-secondary btn-sm"
-                        data-bs-toggle="tooltip" title="View API keys" aria-label="View API keys">
-                        <i class="bi bi-key" aria-hidden="true"></i>
                     </a>
                 </td>
             </tr>

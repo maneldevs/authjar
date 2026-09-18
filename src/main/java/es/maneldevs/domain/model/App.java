@@ -1,10 +1,10 @@
 package es.maneldevs.domain.model;
 
-public class Client {
+public class App {
     private final String id;
     private final String name;
 
-    public Client(String id, String name) {
+    public App(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -16,4 +16,5 @@ public class Client {
     public String getName() {
         return name;
     }
+    
 }

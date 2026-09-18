@@ -15,11 +15,6 @@
             <input type="text" id="name" name="name" class="form-control" value="${client.getName()}" required autofocus>
         </div>
 
-        <div class="mb-3 form-check">
-            <input type="checkbox" id="active" name="active" class="form-check-input" checked="${client.isActive()}">
-            <label for="active" class="form-check-label">Active</label>
-        </div>
-
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="/web/clients" class="btn btn-outline-secondary">Cancel</a>

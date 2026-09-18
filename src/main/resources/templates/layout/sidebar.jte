@@ -16,6 +16,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="/web/apps"
+                    class="nav-link link-dark${"apps".equals(activeItem) ? " active fw-bold" : ""}">
+                    Applications
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="/web/users"
                     class="nav-link link-dark${"users".equals(activeItem) ? " active fw-bold" : ""}">
                     Users

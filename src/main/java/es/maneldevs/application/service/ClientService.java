@@ -31,9 +31,9 @@ public class ClientService implements ClientUseCase {
     }
 
     @Override
-    public void updateClient(String id, String name, boolean active) {
+    public void updateClient(String id, String name) {
         validateName(name, id);
-        clientPort.updateClient(id, name, active);
+        clientPort.updateClient(id, name);
     }
 
     private void validateName(String name, String excludeId) {
