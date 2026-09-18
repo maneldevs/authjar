@@ -29,10 +29,6 @@
                         data-bs-toggle="tooltip" title="Edit app" aria-label="Edit app">
                         <i class="bi bi-pencil" aria-hidden="true"></i>
                     </a>
-                    <a href="/web/apps/${app.getId()}/delete" class="btn btn-outline-danger btn-sm me-1"
-                        data-bs-toggle="tooltip" title="Delete app" aria-label="Delete app">
-                        <i class="bi bi-trash" aria-hidden="true"></i>
-                    </a>
                 </td>
             </tr>
             @endfor
