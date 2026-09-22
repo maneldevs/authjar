@@ -27,6 +27,7 @@ public class ClientAppWebController implements HttpController {
     public void registerRoutes(JavalinConfig config) {
         config.routes.get("/web/clients/{clientId}/apps", this::listClientApps);
         config.routes.get("/web/clients/{clientId}/apps/new", this::newClientAppForm);
+        config.routes.post("/web/clients/{clientId}/apps/generate-api-key", this::generateApiKey);
         config.routes.post("/web/clients/{clientId}/apps", this::createClientApp);
         config.routes.get("/web/clients/{clientId}/apps/{appId}/edit", this::editClientAppForm);
         config.routes.post("/web/clients/{clientId}/apps/{appId}/edit", this::updateClientApp);
@@ -51,11 +52,16 @@ public class ClientAppWebController implements HttpController {
         ctx.render("client-apps-new.jte", model);
     }
 
+    private void generateApiKey(Context ctx) {
+        ctx.json(Map.of("apiKey", clientAppUseCase.generateApiKey()));
+    }
+
     private void createClientApp(Context ctx) {
         String clientId = ctx.pathParam("clientId");
         String appId = ctx.formParam("appId");
         String name = ctx.formParam("name");
-        clientAppUseCase.createClientApp(clientId, appId, name);
+        String apiKey = ctx.formParam("apiKey");
+        clientAppUseCase.createClientApp(clientId, appId, name, apiKey);
         ctx.redirect("/web/clients/" + clientId + "/apps");
     }
 
@@ -75,7 +81,8 @@ public class ClientAppWebController implements HttpController {
         String appId = ctx.pathParam("appId");
         String name = ctx.formParam("name");
         Boolean active = ctx.formParam("active") != null;
-        clientAppUseCase.updateClientApp(clientId, appId, name, active);
+        String apiKey = ctx.formParam("apiKey");
+        clientAppUseCase.updateClientApp(clientId, appId, name, active, apiKey);
         ctx.redirect("/web/clients/" + clientId + "/apps");
     }
 

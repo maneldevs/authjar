@@ -1,5 +1,6 @@
 package es.maneldevs.application.portin;
 
+import es.maneldevs.domain.model.ClientApp;
 import es.maneldevs.domain.model.Session;
 import es.maneldevs.domain.model.User;
 
@@ -8,7 +9,7 @@ public interface AuthUseCase {
 
     User getUserLoggedFromToken(String token);
 
-    boolean authenticateB2B(String apiKey);
+    ClientApp authenticateB2B(String apiKey);
 
     User registerUser(String email, String password, String role);
 

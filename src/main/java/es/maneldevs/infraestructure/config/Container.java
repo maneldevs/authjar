@@ -8,7 +8,6 @@ import es.maneldevs.application.portin.AppUseCase;
 import es.maneldevs.application.portin.AuthUseCase;
 import es.maneldevs.application.portin.ClientAppUseCase;
 import es.maneldevs.application.portin.ClientUseCase;
-import es.maneldevs.application.portout.ApiKeyPort;
 import es.maneldevs.application.portout.AppPort;
 import es.maneldevs.application.portout.ClientAppPort;
 import es.maneldevs.application.portout.ClientPort;
@@ -28,7 +27,6 @@ import es.maneldevs.infraestructure.in.adapter.web.ClientAppWebController;
 import es.maneldevs.infraestructure.in.adapter.web.ClientWebController;
 import es.maneldevs.infraestructure.in.adapter.web.DashboardWebController;
 import es.maneldevs.infraestructure.in.adapter.web.DefaultWebController;
-import es.maneldevs.infraestructure.out.persistence.ApiKeyRepository;
 import es.maneldevs.infraestructure.out.persistence.AppRepository;
 import es.maneldevs.infraestructure.out.persistence.ClientAppRepository;
 import es.maneldevs.infraestructure.out.persistence.ClientRepository;
@@ -41,13 +39,12 @@ public class Container {
 
     public Container(HikariDataSource dataSource) {
         UserPort userPort = new UserRepository(dataSource);
-        ApiKeyPort apiKeyPort = new ApiKeyRepository(dataSource);
         SessionPort sessionPort = new SessionRepository(dataSource);
         ClientPort clientPort = new ClientRepository(dataSource);
         AppPort appPort = new AppRepository(dataSource);
         ClientAppPort clientAppPort = new ClientAppRepository(dataSource);
 
-        AuthUseCase authUseCase = new AuthService(userPort, apiKeyPort, sessionPort);
+        AuthUseCase authUseCase = new AuthService(userPort, clientAppPort, sessionPort);
         ClientUseCase clientUseCase = new ClientService(clientPort);
         AppUseCase appUseCase = new AppService(appPort);
         ClientAppUseCase clientAppUseCase = new ClientAppService(clientAppPort, clientPort, appPort);

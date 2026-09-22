@@ -4,6 +4,7 @@ import java.util.Set;
 
 import es.maneldevs.application.portin.AuthUseCase;
 import es.maneldevs.domain.exception.UnauthenticatedException;
+import es.maneldevs.domain.model.ClientApp;
 import es.maneldevs.domain.model.User;
 import es.maneldevs.infraestructure.in.model.RoleEnum;
 import es.maneldevs.infraestructure.in.model.UserSession;
@@ -31,7 +32,8 @@ public class SecurityFilter {
         } else if (path.startsWith("/web")) {
             userLogged = validateSession(ctx);
         } else if (path.startsWith("/b2b")) {
-            validarB2B(ctx);
+            ctx.attribute("clientAppLogged", validateB2B(ctx));
+            return;
         } else {
             ctx.status(404);
             return;
@@ -75,11 +77,13 @@ public class SecurityFilter {
         throw new UnauthenticatedException();
     }
 
-    private void validarB2B(Context ctx) {
+    private ClientApp validateB2B(Context ctx) {
         String apiKey = ctx.header("X-API-KEY");
-        if (!authUseCase.authenticateB2B(apiKey)) {
+        ClientApp clientAppLogged = authUseCase.authenticateB2B(apiKey);
+        if (clientAppLogged == null) {
             throw new UnauthenticatedException();
         }
+        return clientAppLogged;
     }
 
     private boolean isStaticResource(String path) {

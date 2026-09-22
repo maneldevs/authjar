@@ -31,21 +31,26 @@ public class ClientAppService implements ClientAppUseCase {
     }
 
     @Override
-    public ClientApp createClientApp(String clientId, String appId, String name) {
-        validateClientId(clientId);
-        validateAppId(appId);
-        validateName(name, null);
-        return clientAppPort.createClientApp(clientId, appId, name);
+    public String generateApiKey() {
+        return ApiKeyUtils.generate();
     }
 
     @Override
-    public void updateClientApp(String clientId, String appId, String name, Boolean active) {
+    public ClientApp createClientApp(String clientId, String appId, String name, String apiKey) {
+        validateClientId(clientId);
+        validateAppId(appId);
+        validateName(name, null);
+        return clientAppPort.createClientApp(clientId, appId, name, hashApiKeyIfPresent(apiKey));
+    }
+
+    @Override
+    public void updateClientApp(String clientId, String appId, String name, Boolean active, String apiKey) {
         ClientApp existing = clientAppPort.getClientApp(clientId, appId);
         if (existing == null) {
             throw new ValidationException("Client app not found");
         }
         validateName(name, existing.getId());
-        clientAppPort.updateClientApp(existing.getId(), name, active);
+        clientAppPort.updateClientApp(existing.getId(), name, active, hashApiKeyIfPresent(apiKey));
     }
 
     private void validateClientId(String clientId) {
@@ -64,6 +69,13 @@ public class ClientAppService implements ClientAppUseCase {
         if (appPort.getAppById(appId) == null) {
             throw new ValidationException("App not found");
         }
+    }
+
+    private String hashApiKeyIfPresent(String apiKey) {
+        if (apiKey == null || apiKey.isBlank()) {
+            return null;
+        }
+        return ApiKeyUtils.hash(apiKey);
     }
 
     private void validateName(String name, String excludeId) {

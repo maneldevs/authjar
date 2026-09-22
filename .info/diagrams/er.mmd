@@ -23,6 +23,10 @@ erDiagram
         bool active
         string app_id FK
         string client_id FK
+        string* api_key_hash
+        bool* current_status
+        jsonb* current_status_data
+        timestamptz* current_status_datetime
     }
 
     sessions {
@@ -31,14 +35,6 @@ erDiagram
         string user_id FK
     }
 
-    api_keys {
-        string id PK
-        string client_app_id FK
-        string api_key_hash
-        bool active
-    }
-
     users ||--o{ sessions : ""
     clients ||--o{ client_apps : ""
     apps ||--o{ client_apps : ""
-    client_apps ||--o{ api_keys : ""

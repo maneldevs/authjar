@@ -8,7 +8,7 @@
 @param String error
 
 @template.layout.main(title = "New client app", userEmail = userEmail, activeItem = "clients", content = @`
-    <form method="post" action="/web/clients/${client.getId()}/apps" class="col-12 col-md-6 col-lg-4">
+    <form method="post" action="/web/clients/${client.getId()}/apps" class="col-12 col-lg-6">
         @if(!error.isEmpty())
         <div class="alert alert-danger">${error}</div>
         @endif
@@ -32,9 +32,20 @@
             <input type="text" id="name" name="name" class="form-control" required>
         </div>
 
+        <div class="mb-3">
+            <label for="apiKey" class="form-label">API Key</label>
+            <div class="input-group">
+                <input type="text" id="apiKey" name="apiKey" class="form-control" readonly placeholder="Click Generate to create a key">
+                <button type="button" id="generateApiKeyBtn" class="btn btn-outline-secondary"
+                    data-generate-url="/web/clients/${client.getId()}/apps/generate-api-key">Generate</button>
+            </div>
+            <div class="form-text">Copy this key now, it will not be shown again.</div>
+        </div>
+
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="/web/clients/${client.getId()}/apps" class="btn btn-outline-secondary">Cancel</a>
         </div>
     </form>
+    <script src="/static/js/client-apps.js"></script>
 `)

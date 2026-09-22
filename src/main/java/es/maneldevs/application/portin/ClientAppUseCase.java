@@ -9,7 +9,9 @@ public interface ClientAppUseCase {
 
     ClientApp getClientApp(String clientId, String appId);
 
-    ClientApp createClientApp(String clientId, String appId, String name);
+    String generateApiKey();
 
-    void updateClientApp(String clientId, String appId, String name, Boolean active);
+    ClientApp createClientApp(String clientId, String appId, String name, String apiKey);
+
+    void updateClientApp(String clientId, String appId, String name, Boolean active, String apiKey);
 }
